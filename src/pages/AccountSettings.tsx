@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface UserData {
-  fullName: string;
+  name?: string;
   email: string;
   company?: string;
   isAgency?: string;
@@ -29,10 +29,24 @@ const AccountSettings = () => {
       if (user) {
         const updatedUser = { ...user, image: base64String };
         setUser(updatedUser);
-        localStorage.setItem("popx-user", JSON.stringify(updatedUser));
+        localStorage.setItem("popxUser", JSON.stringify(updatedUser));
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const getDisplayName = () => {
+    if (!user) return "";
+    if (user.name && user.name.trim() !== "") {
+      return user.name;
+    }
+    // agar name nahi hai to email ke @ ke pehle ka part
+    return user.email.split("@")[0];
+  };
+
+  const getAvatarLetter = () => {
+    const displayName = getDisplayName();
+    return displayName.charAt(0).toUpperCase();
   };
 
   return (
@@ -58,9 +72,7 @@ const AccountSettings = () => {
                         className="w-16 h-16 rounded-full object-cover"
                       />
                     ) : (
-                      <span className="text-white text-lg">
-                        {user.fullName?.charAt(0) || "U"}
-                      </span>
+                      <span className="text-white text-lg">{getAvatarLetter()}</span>
                     )}
                   </div>
                   {/* Upload Button */}
@@ -76,7 +88,7 @@ const AccountSettings = () => {
                 {/* User Info */}
                 <div className="flex-1">
                   <h2 className="text-lg font-semibold text-foreground">
-                    {user.fullName}
+                    {getDisplayName()}
                   </h2>
                   <p className="text-muted-foreground text-sm">{user.email}</p>
                   {user.company && (
