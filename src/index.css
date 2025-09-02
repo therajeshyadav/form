@@ -2,41 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* PopX App Design System - Mobile Interface */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    /* PopX Color Palette */
+    --background: 0 0% 96%;
+    --foreground: 210 4% 28%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
+    --card-foreground: 210 4% 28%;
+    
+    /* PopX Purple Theme */
+    --primary: 266 100% 56%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 266 100% 90%;
+    
+    /* Secondary Colors */
+    --secondary: 266 35% 86%;
+    --secondary-foreground: 266 100% 56%;
+    
+    /* Neutral Colors */
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --ring: 266 100% 56%;
+    
+    /* PopX Golden Accent */
+    --accent-gold: 45 100% 58%;
+    --accent-gold-foreground: 0 0% 100%;
+    
+    /* Radius */
+    --radius: 8px;
+    --radius-lg: 12px;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +98,37 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Mobile App Container */
+  .mobile-container {
+    @apply max-w-sm mx-auto bg-card min-h-screen relative;
+  }
+
+  /* Step Indicators */
+  .step-indicator {
+    @apply w-8 h-8 rounded-full bg-gradient-to-b from-accent-gold to-yellow-500 flex items-center justify-center text-white font-semibold text-sm shadow-lg;
+  }
+}
+
+@layer components {
+  /* PopX Button Variants */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground rounded-lg px-6 py-4 font-medium text-base w-full transition-all duration-200 hover:bg-primary/90;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground rounded-lg px-6 py-4 font-medium text-base w-full transition-all duration-200;
+  }
+
+  /* PopX Input Styling */
+  .popx-input {
+    @apply w-full px-3 py-3 border border-input rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring;
+  }
+
+  /* PopX Form Labels */
+  .popx-label {
+    @apply block text-sm font-medium text-primary mb-1;
   }
 }
