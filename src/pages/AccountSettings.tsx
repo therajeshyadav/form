@@ -1,6 +1,40 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+interface UserData {
+  fullName: string;
+  email: string;
+  company?: string;
+  isAgency?: string;
+  image?: string;
+}
+
 const AccountSettings = () => {
+  const [user, setUser] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("popxUser");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      if (user) {
+        const updatedUser = { ...user, image: base64String };
+        setUser(updatedUser);
+        localStorage.setItem("popx-user", JSON.stringify(updatedUser));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <div className="mobile-container">
       <div className="flex flex-col justify-start min-h-screen px-8 py-12">
@@ -12,37 +46,55 @@ const AccountSettings = () => {
             </h1>
 
             {/* User Profile Section */}
-            <div className="flex items-start space-x-4">
-              {/* Avatar */}
-              <div className="relative">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
-                  <img
-                    src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=64&h=64&fit=crop&crop=face"
-                    alt="Profile"
-                    className="w-16 h-16 rounded-full object-cover"
+            {user ? (
+              <div className="flex items-start space-x-4">
+                {/* Avatar */}
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center overflow-hidden">
+                    {user.image ? (
+                      <img
+                        src={user.image}
+                        alt="Profile"
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-white text-lg">
+                        {user.fullName?.charAt(0) || "U"}
+                      </span>
+                    )}
+                  </div>
+                  {/* Upload Button */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="absolute bottom-0 right-0 w-6 h-6 opacity-0 cursor-pointer"
+                    title="Upload profile picture"
                   />
                 </div>
-                {/* Online indicator */}
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 bg-white rounded-full"></div>
+
+                {/* User Info */}
+                <div className="flex-1">
+                  <h2 className="text-lg font-semibold text-foreground">
+                    {user.fullName}
+                  </h2>
+                  <p className="text-muted-foreground text-sm">{user.email}</p>
+                  {user.company && (
+                    <p className="text-muted-foreground text-xs">
+                      {user.company} {user.isAgency === "yes" ? "(Agency)" : ""}
+                    </p>
+                  )}
                 </div>
               </div>
-
-              {/* User Info */}
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold text-foreground">
-                  Marry Doe
-                </h2>
-                <p className="text-muted-foreground text-sm">
-                  Marry@Gmail.Com
-                </p>
-              </div>
-            </div>
+            ) : (
+              <p className="text-muted-foreground">No user found. Please sign in.</p>
+            )}
 
             {/* Description */}
             <div className="mt-6">
               <p className="text-muted-foreground text-sm leading-relaxed">
-                Lorem Ipsum Dolor Sit Amet. Consectetur Adipiscing Elit, Sed Diam Nonumy Eirmod Tempor Invidunt Ut Labore Et Dolore Magna Aliquyam Erat. Sed Diam
+                Welcome to your account settings. You can update your details and
+                upload a profile picture.
               </p>
             </div>
           </div>

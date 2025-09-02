@@ -8,22 +8,33 @@ const CreateAccount = () => {
     email: "",
     password: "",
     company: "",
-    isAgency: "yes"
+    isAgency: "yes",
   });
   const navigate = useNavigate();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Simple validation - in real app would handle account creation
+
     if (formData.fullName && formData.email && formData.password) {
+      // Save user data to localStorage
+      const userData = {
+        name: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        company: formData.company,
+        isAgency: formData.isAgency,
+      };
+      localStorage.setItem("popxUser", JSON.stringify(userData));
+
+      // Redirect to account page
       navigate("/account");
     }
   };
@@ -59,7 +70,7 @@ const CreateAccount = () => {
               <input
                 type="tel"
                 name="phone"
-                placeholder="Marry Doe"
+                placeholder="9876543210"
                 value={formData.phone}
                 onChange={handleInputChange}
                 className="popx-input"
@@ -72,7 +83,7 @@ const CreateAccount = () => {
               <input
                 type="email"
                 name="email"
-                placeholder="Marry Doe"
+                placeholder="example@email.com"
                 value={formData.email}
                 onChange={handleInputChange}
                 className="popx-input"
@@ -85,7 +96,7 @@ const CreateAccount = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="Marry Doe"
+                placeholder="Enter password"
                 value={formData.password}
                 onChange={handleInputChange}
                 className="popx-input"
@@ -98,7 +109,7 @@ const CreateAccount = () => {
               <input
                 type="text"
                 name="company"
-                placeholder="Marry Doe"
+                placeholder="Company Name"
                 value={formData.company}
                 onChange={handleInputChange}
                 className="popx-input"

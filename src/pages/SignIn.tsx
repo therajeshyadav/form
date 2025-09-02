@@ -6,10 +6,18 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    // Simple validation - in real app would handle authentication
+
     if (email && password) {
+      // Save user data in localStorage
+      const userData = {
+        name: email.split("@")[0], // simple username from email
+        email,
+      };
+      localStorage.setItem("popxUser", JSON.stringify(userData));
+
+      // Navigate to account page
       navigate("/account");
     }
   };
@@ -21,7 +29,7 @@ const SignIn = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-xl font-semibold text-foreground mb-3">
-              Signin to your PopX account
+              Sign in to your PopX account
             </h1>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -60,8 +68,11 @@ const SignIn = () => {
           </form>
 
           <div className="mt-6 text-center">
-            <Link to="/create-account" className="text-primary text-sm hover:underline">
-              Don't have an account? Create one
+            <Link
+              to="/create-account"
+              className="text-primary text-sm hover:underline"
+            >
+              Don&apos;t have an account? Create one
             </Link>
           </div>
         </div>
