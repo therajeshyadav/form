@@ -10,7 +10,7 @@ import AccountSettings from "./pages/AccountSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
+//update
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
